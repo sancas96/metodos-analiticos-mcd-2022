@@ -1,0 +1,47 @@
+---
+title: "Tarea Recetas"
+output: html_document
+---
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+library(arules)
+library(arulesViz)
+library(tidyverse)
+```
+
+```{r}
+ruta <- "~/ma-2022/metodos-analiticos/datos/recetas/srep00196-s3.csv"
+#gc_ruta <- "https://storage.cloud.google.com/metodos-analiticos/FIFA.csv"
+if(!file.exists(ruta)){
+  stop("Es necesario bajar manualmente el archivo")
+} else {
+  recetas <- read.csv(ruta)
+}
+#glimpse(recetas)
+lista_mb <- as(recetas, 'list')
+
+recetas %>%
+   count(region)
+
+n_distinct(recetas$region)
+```
+
+Estas son tres **canastas** (recetas) de ejemplo:
+
+```{r, collapse = TRUE}
+#lista_mb[[3]]
+#lista_mb[[33]]
+```
+
+Describiremos algunas características típicas de este tipo de datos. En primer
+lugar, 
+podemos calcular la distribución del 
+número de ingredientes por receta, y vemos que es una cantidad relativamente baja
+en comparación al número total de artículos existentes:
+
+```{r, fig.width=4, fig.asp=0.7}
+sprintf("Número de canastas: %s", length(lista_mb))
+num_items <- sapply(lista_mb, length)
+sprintf("Promedio de artículos por canasta: %.3f", mean(num_items))
+qplot(num_items, binwidth = 1)
+```

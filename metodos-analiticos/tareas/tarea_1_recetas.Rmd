@@ -1,19 +1,21 @@
 ---
 title: "Análisis de ingredientes en recetas"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 Análisis de
 https://www.nature.com/articles/srep00196.pdf
 
 Podemos usar *read_lines_chunked* si el archivo original es grande. En
-este ejemplo, filtramos las recetas  *East Asian*:
+este ejemplo, filtramos las recetas  *Latin American*:
 
 ```{r, message = FALSE}
 library(tidyverse)
 limpiar <- function(lineas, ...){
   str_split(lineas, ',') |>  
-    keep(~.x[1] == 'EastAsian') |> 
+    keep(~.x[1] == 'LatinAmerican') |> 
     map(~.x[-1]) |>  # quitar tipo de cocina
     map(~.x[nchar(.x) > 0]) # quitar elementos vacios
 }
@@ -151,8 +153,8 @@ Exportamos para examinar en Gephi:
 
 
 ```{r}
-write_csv(df_reglas |> rename(source=from, target=to) |>
-            select(-count), 'reglas.csv')
+#write_csv(df_reglas |> rename(source=from, target=to) |>
+#            select(-count), 'reglas.csv')
 ```
 
 
@@ -162,11 +164,11 @@ La combinación _corn_ y _starch_ puede deberse en parte a una separación incor
 procesamiento de los datos (corn starch o maizena convertido en dos ingredientes, corn y starch):
 
 ```{r}
-df_reglas |> filter(from == "{corn}", to == "{starch}")
+#df_reglas |> filter(from == "{corn}", to == "{starch}")
 ```
 
 La confianza es considerablemente alta, aunque tenemos pocos datos de esta combinación. Podemos examinar algunos ejemplos:
 
 ```{r}
-recetas |> keep(~ "starch" %in% .x & "corn" %in% .x) |> head(10)
+#recetas |> keep(~ "starch" %in% .x & "corn" %in% .x) |> head(10)
 ```

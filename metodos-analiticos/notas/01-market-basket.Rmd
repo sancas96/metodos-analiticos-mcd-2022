@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Análisis de conjuntos frecuentes {#frecuentes}
 
 ```{r, include = FALSE}
